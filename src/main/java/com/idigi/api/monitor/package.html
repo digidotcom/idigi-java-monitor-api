@@ -1,0 +1,25 @@
+<html>
+  <head>
+    <title>iDigi Monitor Documentation</title>
+  </head>
+  <body>
+    This package defines an interface and implementations for receiving push messages
+    from the iDigi monitor service.
+
+    <h3>Example:</h3>
+    <code><pre>
+    MonitorClientFactory factory = ...;
+    MessageListener listener = new MessageListener {
+      {@literal @Override}
+      public void messageReceived(Message message) {
+        Scanner scanner = new Scanner(message.getPayload());
+        while(scanner.hasNextLine()) {
+          System.out.println(scanner.nextLine());
+        }
+      }
+    }
+    MonitorClientContext client = factory.buildClient(1234, listener);
+    client.start();
+    </pre></code>
+  </body>
+</html>

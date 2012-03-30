@@ -1,0 +1,31 @@
+allprojects {
+
+  apply plugin: 'java'
+
+  dependencies {
+    compile fileTree(dir: 'lib', includes: ['*.jar'])
+  }
+
+  task myJavadocs(type: Javadoc) {
+    source = sourceSets.main.allJava
+  }
+
+  test {
+    testLogging.showStandardStreams = true
+  }
+
+  jar {
+    dependsOn configurations.runtime
+    from {
+      configurations.runtime.collect {
+       it.isDirectory() ? it : zipTree(it)
+      }
+    }
+  }
+}
+
+subprojects {
+  dependencies {
+    compile rootProject
+  }
+}
