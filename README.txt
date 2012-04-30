@@ -48,14 +48,14 @@ Implementations
 ### Netty
 
 The Netty implementation of the iDigi Push Monitor API provides two
-MonitorClientFactory implementations:
+`MonitorClientFactory` implementations:
 
-* NettyMonitorClientFactory
-* SecureNettyMonitorClientFactory
+* `NettyMonitorClientFactory`
+* `SecureNettyMonitorClientFactory`
 
 #### NettyMonitorClientFactory
 
-NettyMonitorClientFactory sends data (including authentication) over the wire
+`NettyMonitorClientFactory` sends data (including authentication) over the wire
 without encryption. Therefore, this implementation should not be used for
 production environments. Production environments should use the
 `SecureNettyMonitorClientFactory`.
@@ -69,16 +69,14 @@ SecureNettyMonitorClientFactory sends and receives data over an SSL TCP
 socket.
 
     SecureNettyMonitorClientFactory factory =
-        new SecureNettyMonitorClientFactory(
-            'developer.idigi.com', 'user', 'pass');
+        new SecureNettyMonitorClientFactory('developer.idigi.com', 'user', 'pass');
 
 The constructor above uses a permissive SSL context, so any valid certificate
 is accepted from the server.  This is still vulnerable to man-in-the-middle
 attacks.  For added security, a program may specify it's own SSL context for
-validating certificated.
+validating certificates.
 
     SSLContext context = ...; // some custom SSLContext implementation
     SecureNettyMonitorClientFactory factory =
-        new SecureNettyMonitorClientFactory(
-            'developer.idigi.com', 'user', 'pass', sslContext);
+        new SecureNettyMonitorClientFactory('developer.idigi.com', 'user', 'pass', sslContext);
 
