@@ -21,7 +21,7 @@ First, create a monitor using the Monitor web service.
       <monCompression>gzip</monCompression>
       <monBatchDuration>0</monBatchDuration>
     </Monitor>
-    $ curl -v -XPOST -d @request.xml https://user:pass@developer.idigi.com/ws/Monitor
+    $ curl -XPOST -d @request.xml https://user:pass@developer.idigi.com/ws/Monitor
     <?xml version="1.0" encoding="ISO-8859-1"?>
     <result>
        <location>Monitor/1234</location>
