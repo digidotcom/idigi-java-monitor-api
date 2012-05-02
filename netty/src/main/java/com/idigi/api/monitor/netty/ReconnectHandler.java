@@ -20,6 +20,7 @@ import java.net.ConnectException;
 import java.net.InetSocketAddress;
 
 import org.jboss.netty.bootstrap.ClientBootstrap;
+import org.jboss.netty.channel.Channel;
 import org.jboss.netty.channel.ChannelHandlerContext;
 import org.jboss.netty.channel.ChannelStateEvent;
 import org.jboss.netty.channel.ExceptionEvent;
@@ -29,7 +30,13 @@ import org.slf4j.LoggerFactory;
 
 public class ReconnectHandler extends SimpleChannelUpstreamHandler {
 
-  final ClientBootstrap bootstrap;
+  public static interface ChannelChangeListener {
+    void channelChanged(Channel channel);
+  }
+
+  private final ClientBootstrap bootstrap;
+
+  private boolean reconnect = false;
 
   private static final Logger logger = LoggerFactory
       .getLogger(ReconnectHandler.class);
@@ -40,10 +47,20 @@ public class ReconnectHandler extends SimpleChannelUpstreamHandler {
 
   @Override
   public void channelClosed(ChannelHandlerContext ctx, ChannelStateEvent e) {
-    // Reconnect unless the channel was closed due to a request from
-    // and upstream handler.
-    logger.info("Reconnecting to: {}", getRemoteAddress());
-    bootstrap.connect();
+    // Reconnect if the close event was caused by this handler.
+    if (this.reconnect) {
+      logger.info("Reconnecting to: {}", getRemoteAddress());
+      this.reconnect = false;
+      Channel newChannel = bootstrap.connect().getChannel();
+      notifyChannelChangedListener(newChannel);
+    }
+  }
+
+  private void notifyChannelChangedListener(Channel channel) {
+    Object listener = bootstrap.getOption("channelChangeListener");
+    if (listener != null && listener instanceof ChannelChangeListener) {
+      ((ChannelChangeListener) listener).channelChanged(channel);
+    }
   }
 
   protected InetSocketAddress getRemoteAddress() {
@@ -64,6 +81,10 @@ public class ReconnectHandler extends SimpleChannelUpstreamHandler {
       logger.error("Another error occurred: {}", cause.getMessage());
       cause.printStackTrace();
     }
+
+    // This handler initiated the close, so try to reconnect when the close
+    // is complete.
+    this.reconnect = true;
     ctx.getChannel().close();
   }
 }

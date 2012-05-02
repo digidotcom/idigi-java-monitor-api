@@ -25,8 +25,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.idigi.api.monitor.MonitorClientContext;
+import com.idigi.api.monitor.netty.ReconnectHandler.ChannelChangeListener;
 
-class NettyMonitorClientContext implements MonitorClientContext {
+class NettyMonitorClientContext implements MonitorClientContext,
+  ChannelChangeListener {
 
   private final Logger logger = LoggerFactory
       .getLogger(NettyMonitorClientContext.class);
@@ -37,14 +39,18 @@ class NettyMonitorClientContext implements MonitorClientContext {
 
   private InetSocketAddress address;
 
+  private boolean stopped = false;
+
   public NettyMonitorClientContext(ClientBootstrap bootstrap,
     InetSocketAddress address) {
     this.address = address;
     this.bootstrap = bootstrap;
+
+    bootstrap.setOption("channelChangeListener", this);
   }
 
   @Override
-  public void start() {
+  public synchronized void start() {
     logger.debug("Starting monitor client.");
     if (this.channel == null) {
       ChannelFuture f = this.bootstrap.connect(this.address);
@@ -55,16 +61,13 @@ class NettyMonitorClientContext implements MonitorClientContext {
   }
 
   @Override
-  public void stop() {
+  public synchronized void stop() {
     logger.debug("Stopping monitor client.");
     if (this.channel != null) {
-      this.channel.getCloseFuture().addListener(new ChannelFutureListener() {
-        @Override
-        public void operationComplete(ChannelFuture future) throws Exception {
-          releaseResources();
-        }
-      });
-      this.channel.close();
+      this.stopped = true;
+      closeChannel(this.channel);
+    } else {
+      throw new IllegalStateException("The monitor is not running.");
     }
   }
 
@@ -79,6 +82,25 @@ class NettyMonitorClientContext implements MonitorClientContext {
         bootstrap.releaseExternalResources();
       }
     }).start();
+  }
+
+  @Override
+  public synchronized void channelChanged(Channel channel) {
+    if (this.stopped) {
+      closeChannel(channel);
+    } else {
+      this.channel = channel;
+    }
+  }
+
+  private void closeChannel(Channel channel2) {
+    channel.getCloseFuture().addListener(new ChannelFutureListener() {
+      @Override
+      public void operationComplete(ChannelFuture future) throws Exception {
+        releaseResources();
+      }
+    });
+    channel.close();
   }
 
 }
