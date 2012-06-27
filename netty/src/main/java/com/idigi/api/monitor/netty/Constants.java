@@ -16,6 +16,8 @@
 package com.idigi.api.monitor.netty;
 
 public final class Constants {
+  // DO NOT CHANGE
+  // These constants refer to the monitor ports on the iDigi server.
   public static final Integer INSECURE_MONITOR_PORT = 3200;
   public static final Integer SECURE_MONITOR_PORT = 3201;
 }
