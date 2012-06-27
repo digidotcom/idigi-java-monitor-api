@@ -1,11 +1,11 @@
-iDigi Push Monitor API
-======================
+iDigi Monitor API Library for Java
+==================================
 
-This project contains clients for the iDigi monitor service. The iDigi monitor
-service allows clients to receive asynchronous notification of various events
-in iDigi. More information about the iDigi monitor service may be found on the
-[iDigi Website][iDigi]. Log in to your account and check out the iDigi Web
-Services Programming Guide.
+This project contains clients for the iDigi monitor API. The iDigi monitor API
+allows clients to receive asynchronous notification of various events in iDigi.
+More information about the iDigi monitor service may be found on the [iDigi
+Website][iDigi]. Log in to your account and check out the iDigi Web Services
+Programming Guide.
 
 This source has been contributed by [Digi International][Digi].
 
@@ -40,7 +40,8 @@ NOTE: This assumes that a monitor has been created using the iDigi Monitor API
 Example
 -------
 
-This example shows how to integrate the iDigi monitor api into an application.
+This example shows how to integrate the iDigi Monitor API Library into a Java
+app.
 
 First, create a monitor using the Monitor web service.
 
@@ -59,7 +60,7 @@ First, create a monitor using the Monitor web service.
        <location>Monitor/1234</location>
     </result>
 
-Next, use the iDigi Monitor client to process messages received from that monitor.
+Next, use the client to process messages received from that monitor.
 
     int monitorId = 1234;
     MonitorClientFactory factory = ...; // see implementations
@@ -80,7 +81,7 @@ Implementations
 
 ### Netty
 
-The Netty implementation of the iDigi Push Monitor API provides two
+The Netty implementation of the iDigi Monitor API provides two
 `MonitorClientFactory` implementations:
 
 * `NettyMonitorClientFactory`
