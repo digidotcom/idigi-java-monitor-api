@@ -16,6 +16,9 @@ allprojects {
 
   jar {
     dependsOn configurations.runtime
+    manifest {
+      attributes 'Main-class': 'com.idigi.api.monitor.netty.example.NettyMonitorExample' 
+    }
     from {
       configurations.runtime.collect {
        it.isDirectory() ? it : zipTree(it)
