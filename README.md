@@ -3,12 +3,43 @@ iDigi Push Monitor API
 
 This project contains clients for the iDigi monitor service.  The iDigi monitor
 service allows clients to receive asynchronous notification of various events
-in iDigi.  More information about the iDigi monitor service may be found in the
-[iDigi Web Services Programming
-Guide](http://ftp1.digi.com/support/documentation/90002008_D.pdf).
+in iDigi.  More information about the iDigi monitor service may be found on the
+[iDigi Website][iDigi]. Log in to your account and check out the iDigi Web
+Services programming guide documentation. This source has been contributed by
+[Digi International][Digi].
+
+[iDigi][http://www.idigi.com]
+[Digi][http://www.digi.com]
+
+Requirements
+------------
+
+* [Java SDK][Java]
+* [Gradle Build Tool][Gradle]
+* [iDigi Account][iDigi]
+* An iDigi device - this includes any of Digi's gateway products or another
+  iDigi connector like [ConnectPort for PC][CP4PC].
+
+[Java][http://www.java.com]
+[Gradle][http://www.gradle.org]
+[CP4PC][http://www.github.com/digidotcom/cp4pc]
+
+Usage
+-----
+
+Command Line (from project directory):
+
+    $ gradle jar
+    
+    $ java -jar netty/build/libs/netty.jar <host> <username> <password> <monitorId>
+
+NOTE: This assumes that a monitor has been created using the iDigi Monitor API
+(see below).
 
 Example
 -------
+
+This example shows how to integrate the iDigi monitor api into an application.
 
 First, create a monitor using the Monitor web service.
 
@@ -42,6 +73,7 @@ Next, use the iDigi Monitor client to process messages received from that monito
     }
     factory.buildClient(monitorId, listener).start();
 
+
 Implementations
 ---------------
 
@@ -65,7 +97,7 @@ production environments. Production environments should use the
 
 #### SecureNettyMonitorClientFactory
 
-SecureNettyMonitorClientFactory sends and receives data over an SSL TCP
+`SecureNettyMonitorClientFactory` sends and receives data over an SSL TCP
 socket.
 
     SecureNettyMonitorClientFactory factory =
@@ -79,4 +111,14 @@ validating certificates.
     SSLContext context = ...; // some custom SSLContext implementation
     SecureNettyMonitorClientFactory factory =
         new SecureNettyMonitorClientFactory('developer.idigi.com', 'user', 'pass', sslContext);
+
+
+License
+-------
+
+This software is open-source software.  Copyright Digi International, 2012.
+
+This Source Code Form is subject to the terms of the Mozilla Public
+License, v. 2.0. If a copy of the MPL was not distributed with this file,
+You can obtain one at http://mozilla.org/MPL/2.0/.
 
