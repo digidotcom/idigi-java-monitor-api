@@ -59,6 +59,13 @@ class MessageDataBlockDecoder extends
   protected Object decode(ChannelHandlerContext ctx, Channel ch,
       ChannelBuffer buf, State state) throws Exception {
     logger.debug("Decoding PublishMesssage");
+
+    // Decode a monitor message from iDigi. If this decoder gets to some bytes
+    // that haven't been received yet, then this method will exit and get
+    // called again when more data is available. The state variable keeps
+    // track of the next thing to decode.  For more information, check out
+    // the `ReplayingDecoder` documentation.
+
     switch (state) {
     case MESSAGE_TYPE:
       short messageType = buf.readShort();

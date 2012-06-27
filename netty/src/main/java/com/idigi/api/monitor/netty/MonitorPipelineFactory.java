@@ -40,9 +40,12 @@ class MonitorPipelineFactory implements ChannelPipelineFactory {
 
   @Override
   public ChannelPipeline getPipeline() throws Exception {
-    // TODO Refactor stateless handlers into singletons.
-    // Jordan Focht <2011-04-30>
-    ChannelPipeline pipeline = Channels.pipeline();
+
+    // This the backbone for sending and receiving messages from iDigi. Order
+    // is important and the handlers work together and deliver or receive
+    // messages. For more information about pipelines and handlers, check out
+    // the Netty documentation.
+
     pipeline.addLast("hexLogger", Logging.getLoggingHandler()); 
     pipeline.addLast("decoder", new ConnectResponseDecoder());
     pipeline.addLast("authHandler", connectHandler);
