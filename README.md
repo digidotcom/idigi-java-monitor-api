@@ -1,12 +1,13 @@
 iDigi Push Monitor API
 ======================
 
-This project contains clients for the iDigi monitor service.  The iDigi monitor
+This project contains clients for the iDigi monitor service. The iDigi monitor
 service allows clients to receive asynchronous notification of various events
-in iDigi.  More information about the iDigi monitor service may be found on the
+in iDigi. More information about the iDigi monitor service may be found on the
 [iDigi Website][iDigi]. Log in to your account and check out the iDigi Web
-Services programming guide documentation. This source has been contributed by
-[Digi International][Digi].
+Services Programming Guide.
+
+This source has been contributed by [Digi International][Digi].
 
 [iDigi][http://www.idigi.com]
 [Digi][http://www.digi.com]
@@ -116,9 +117,9 @@ validating certificates.
 License
 -------
 
-This software is open-source software.  Copyright Digi International, 2012.
+This software is open-source software. Copyright Digi International, 2012.
 
-This Source Code Form is subject to the terms of the Mozilla Public
-License, v. 2.0. If a copy of the MPL was not distributed with this file,
-You can obtain one at http://mozilla.org/MPL/2.0/.
+This Source Code is subject to the terms of the Apache License v. 2.0. If a
+copy of the Apache License v2.0 was not distributed with this file, you can
+obtain one at http://www.apache.org/licenses.
 
