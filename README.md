@@ -4,26 +4,19 @@ iDigi Monitor API Library for Java
 This project contains clients for the iDigi monitor API. The iDigi monitor API
 allows clients to receive asynchronous notification of various events in iDigi.
 More information about the iDigi monitor service may be found on the [iDigi
-Website][iDigi]. Log in to your account and check out the iDigi Web Services
+Website](http://www.idigi.com). Log in to your account and check out the iDigi Web Services
 Programming Guide.
 
-This source has been contributed by [Digi International][Digi].
-
-[iDigi][http://www.idigi.com]
-[Digi][http://www.digi.com]
+This source has been contributed by [Digi International](http://www.digi.com).
 
 Requirements
 ------------
 
-* [Java SDK][Java]
-* [Gradle Build Tool][Gradle]
-* [iDigi Account][iDigi]
+* [Java SDK](http://www.java.com)
+* [Gradle Build Tool](http://www.gradle.com)
+* [iDigi Account](http://www.idigi.com)
 * An iDigi device - this includes any of Digi's gateway products or another
-  iDigi connector like [ConnectPort for PC][CP4PC].
-
-[Java][http://www.java.com]
-[Gradle][http://www.gradle.org]
-[CP4PC][http://www.github.com/digidotcom/cp4pc]
+  iDigi connector like [ConnectPort for PC](http://www.github.com/digidotcom/cp4pc).
 
 Usage
 -----
