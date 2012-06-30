@@ -46,6 +46,7 @@ class MonitorPipelineFactory implements ChannelPipelineFactory {
     // messages. For more information about pipelines and handlers, check out
     // the Netty documentation.
 
+    ChannelPipeline pipeline = Channels.pipeline();
     pipeline.addLast("hexLogger", Logging.getLoggingHandler()); 
     pipeline.addLast("decoder", new ConnectResponseDecoder());
     pipeline.addLast("authHandler", connectHandler);
