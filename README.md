@@ -13,7 +13,7 @@ Requirements
 ------------
 
 * [Java SDK](http://www.java.com)
-* [Gradle Build Tool](http://www.gradle.com)
+* [Gradle Build Tool](http://www.gradle.org)
 * [iDigi Account](http://www.idigi.com)
 * An iDigi device - this includes any of Digi's gateway products or another
   iDigi connector like [ConnectPort for PC](http://www.github.com/digidotcom/cp4pc).
