@@ -65,7 +65,7 @@ class NettyMonitorClientContext implements MonitorClientContext,
     logger.debug("Stopping monitor client.");
     if (this.channel != null) {
       this.stopped = true;
-      closeChannel(this.channel);
+      closeChannel();
     } else {
       throw new IllegalStateException("The monitor is not running.");
     }
@@ -86,14 +86,14 @@ class NettyMonitorClientContext implements MonitorClientContext,
 
   @Override
   public synchronized void channelChanged(Channel channel) {
+    this.channel = channel;
     if (this.stopped) {
-      closeChannel(channel);
-    } else {
-      this.channel = channel;
+      closeChannel();
     }
   }
 
-  private void closeChannel(Channel channel2) {
+  private void closeChannel() {
+    channel.getPipeline().get(ReconnectHandler.class).setEnabled(false);
     channel.getCloseFuture().addListener(new ChannelFutureListener() {
       @Override
       public void operationComplete(ChannelFuture future) throws Exception {
