@@ -28,7 +28,7 @@ import org.jboss.netty.channel.SimpleChannelUpstreamHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class ReconnectHandler extends SimpleChannelUpstreamHandler {
+class ReconnectHandler extends SimpleChannelUpstreamHandler {
 
   public static interface ChannelChangeListener {
     void channelChanged(Channel channel);
@@ -36,7 +36,7 @@ public class ReconnectHandler extends SimpleChannelUpstreamHandler {
 
   private final ClientBootstrap bootstrap;
 
-  private boolean reconnect = false;
+  private boolean enabled = true;
 
   private static final Logger logger = LoggerFactory
       .getLogger(ReconnectHandler.class);
@@ -45,14 +45,19 @@ public class ReconnectHandler extends SimpleChannelUpstreamHandler {
     this.bootstrap = bootstrap;
   }
 
+  public void setEnabled(boolean enabled) {
+    this.enabled  = enabled;
+  }
+
   @Override
   public void channelClosed(ChannelHandlerContext ctx, ChannelStateEvent e) {
     // Reconnect if the close event was caused by this handler.
-    if (this.reconnect) {
+    if (this.enabled) {
       logger.info("Reconnecting to: {}", getRemoteAddress());
-      this.reconnect = false;
       Channel newChannel = bootstrap.connect().getChannel();
       notifyChannelChangedListener(newChannel);
+    } else {
+        logger.debug("Skipping reconnect.");
     }
   }
 
@@ -65,6 +70,13 @@ public class ReconnectHandler extends SimpleChannelUpstreamHandler {
 
   protected InetSocketAddress getRemoteAddress() {
     return (InetSocketAddress) bootstrap.getOption("remoteAddress");
+  }
+
+  @Override
+  public void channelDisconnected(ChannelHandlerContext ctx,
+      ChannelStateEvent e) throws Exception {
+    super.channelDisconnected(ctx, e);
+    e.getChannel().close();
   }
 
   @Override
@@ -82,9 +94,6 @@ public class ReconnectHandler extends SimpleChannelUpstreamHandler {
       cause.printStackTrace();
     }
 
-    // This handler initiated the close, so try to reconnect when the close
-    // is complete.
-    this.reconnect = true;
     ctx.getChannel().close();
   }
 }
